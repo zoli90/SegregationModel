@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package segregationmodel;
-
 /**
  *
  * @author zoli
@@ -16,11 +15,22 @@ public class SegregationModel {
      */
 
     public static final char LAST_COLOR = 'D';
-
+    public static char numberOfColors = 'D';
+    public static long seed = 1;
+    public static int mapLength = 50;
+    public static int mapHeigth = 20;
+    
+    
     public static void main(String[] args) {
+
+    }
+    
+    public void setupSimulation() {
         
-
-
+    }
+    
+    public void runSimulation() {
+        
     }
     
 }
