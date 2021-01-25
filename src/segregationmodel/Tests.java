@@ -110,6 +110,7 @@ public class Tests {
         
         //create a 3x3 test coordinate system and assign the Agent's position
         
+        testAgent.setColor('A');
         char[][] testArray1 = {{'_','A','_'},
                                {'B','A','_'},
                                {'_','_','A'}};
