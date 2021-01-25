@@ -27,12 +27,7 @@ public class Agent {
     
     public static Random randomGenerator = new Random(SegregationModel.seed);
     
-    //Section 2: basic setters
-    
-    public void setColor(char colorInput) {
-        if ((int) colorInput >= 65 && (int) colorInput <= SegregationModel.LAST_COLOR)
-            cell.color = colorInput;
-    }
+    //Section 2: basic setters and constructor methods
     
     public void setHomophility(float homophilityInput) {
         
@@ -41,12 +36,13 @@ public class Agent {
         
     }    
     
-    public void setX(int x) {
-        cell.x = x;
+    public void setCell(int i, int j, char c) {
+        cell.setCell(i, j, c);
     }
     
-    public void setY(int y) {
-        cell.y = y;
+    public Agent(Cell cellinput, float homophilityInput) {
+        cell = cellinput;
+        homophility = homophilityInput;
     }
     
     //Section 3: Methods that provide input for the Agent to process
@@ -72,7 +68,7 @@ public class Agent {
             
             for (int i = 0; i < size; i++) {
                 for (int j = 0; j < size; j++) {
-                    if(i != j && cells.get(i).x == cells.get(j).x && cells.get(i).y == cells.get(j).y) {
+                    if(i != j && cells.get(i).getX() == cells.get(j).getX() && cells.get(i).getY() == cells.get(j).getY()) {
                         output = checkCellCode.DUPLICATE_CELLS_FOUND;
                         return output;                              
                     }
@@ -88,23 +84,26 @@ public class Agent {
         
         neighborCells.clear();
         //Do a nested for loop but do not go out of bounds
-        for (int i = Math.max(0, cell.x - 1) ; i < Math.min(cell.x + 2, arr[0].length); i++) {
-            for (int j = Math.max(0, cell.y - 1) ; j < Math.min(cell.y + 2, arr.length); j++) {
+        int ownX = cell.getX();
+        int ownY = cell.getY();
+        
+        for (int i = Math.max(0, ownX - 1) ; i < Math.min(ownX + 2, arr[0].length); i++) {
+            for (int j = Math.max(0, ownY - 1) ; j < Math.min(ownY + 2, arr.length); j++) {
                 
-                if (!(i == cell.x && j == cell.y)) //skip the Agent's own position
+                if (!(i == ownX && j == ownY)) //skip the Agent's own position
                     neighborCells.add(new Cell(i, j, arr[j][i]));
                     
             }
         }
         if (checkCells(neighborCells) != checkCellCode.ARRAYLIST_OK)
-            System.out.println("getCells method has created duplicate cells!");
+            System.out.println("getCells method has created duplicate cells! Code is: " + checkCells(neighborCells));
     }
 
-    public int getEmptyCells() {
+    public int getNumberOfEmptyCells() {
         
         int output = 0;
         for (Cell cells : neighborCells) {
-            if (cells.color == '_')
+            if (cells.getColor() == '_')
                 output++;
         }
         
@@ -112,11 +111,11 @@ public class Agent {
         
     }
     
-    public int getSameColorCells() {
+    public int getNumberOfSameColorCells() {
         
         int output = 0;
         for (Cell cells : neighborCells) {
-            if (cells.color == cell.color)
+            if (cells.getColor() == cell.getColor())
                 output++;
         }
         
@@ -124,16 +123,16 @@ public class Agent {
         
     }
     
-    public int getDifferentColorCells() {
+    public int getNumberOfDifferentColorCells() {
         
-        int output = neighborCells.size() - getEmptyCells() - getSameColorCells();
+        int output = neighborCells.size() - getNumberOfEmptyCells() - getNumberOfSameColorCells();
         return output;
         
     }
     
     //Section 4: Decision making methods
     
-    //getNextStep and getNeighborCells are just for testing purposes
+    //getNextStep and getNeighborCells are for testing purposes
     
     public Cell getNextStep() {
         return nextStep;
@@ -143,11 +142,13 @@ public class Agent {
         return neighborCells;
     }
     
+    //Below are the methods that are actually used
+    
     public void setNextStep() {
         
-        int emptyCells = getEmptyCells();
-        int sameColor = getSameColorCells();
-        int differentColor = getDifferentColorCells();
+        int emptyCells = getNumberOfEmptyCells();
+        int sameColor = getNumberOfSameColorCells();
+        int differentColor = getNumberOfDifferentColorCells();
         float colorRatio = (float) sameColor / (sameColor + differentColor);
         
         if (emptyCells == 0) {
@@ -166,12 +167,12 @@ public class Agent {
         Iterator<Cell> it = neighborCells.iterator();
         while (it.hasNext()) {
             Cell testedCell = it.next();
-            if (testedCell.color != '_')
+            if (testedCell.getColor() != '_')
                 it.remove();
         }
         
-        if (checkCells(neighborCells) != checkCellCode.ARRAYLIST_OK)
-            System.out.println("getCells method has created duplicate cells!");        
+        if (checkCells(neighborCells) == checkCellCode.DUPLICATE_CELLS_FOUND)
+            System.out.println("removeOccopiedCells method has created duplicate cells!");        
         
     }
     
@@ -179,11 +180,12 @@ public class Agent {
     
     public char[][] setPosition(char[][] arr) {
         
-        arr[nextStep.y][nextStep.x] = cell.color;
-        arr[cell.y][cell.x] = '_';
-        cell.x = nextStep.x;
-        cell.y = nextStep.y;
+        if (nextStep != null) {
+        arr[nextStep.getY()][nextStep.getX()] = cell.getColor();
+        arr[cell.getY()][cell.getX()] = '_';
+        cell.setCell(nextStep.getX(), nextStep.getY(), cell.getColor());
         nextStep = null;
+        }
         
         return arr;
         
