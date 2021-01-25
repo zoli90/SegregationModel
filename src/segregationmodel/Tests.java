@@ -20,9 +20,7 @@ public class Tests {
         
         //create an Agent and set some of its variables
         
-        Agent testAgent = new Agent();
-        
-        testAgent.setHomophility(0.5f);
+        Agent testAgent = new Agent(new Cell (0,0, 'A'), 0.5f);
         
         //instantiate an Tests object and start running the tests
         Tests at = new Tests();
@@ -31,6 +29,10 @@ public class Tests {
         at.testGetters(testAgent);        
         at.testDecision(testAgent);
         at.testUpdate(testAgent);
+
+        //instantiate a simulation object and start running the tests        
+        SegregationModel sm = new SegregationModel();
+        at.testSetupSim(sm);
         
     }
     
@@ -108,124 +110,118 @@ public class Tests {
         
         //create a 3x3 test coordinate system and assign the Agent's position
         
-        testAgent.setColor('A');
         char[][] testArray1 = {{'_','A','_'},
                                {'B','A','_'},
                                {'_','_','A'}};
-        testAgent.setX(1);
-        testAgent.setY(1);
+        testAgent.setCell(1, 1, 'A');
         
         //test: find all 5 neighboring empty cells, 2 cell of the same color and 1 cell of different color
         
         testAgent.getCells(testArray1);
-        if (testAgent.getEmptyCells() == 5){
-            System.out.println("Agent getEmptyCells Test (#" + testCaseCounter + ") passed.");
+        if (testAgent.getNumberOfEmptyCells() == 5){
+            System.out.println("Agent getNumberOfEmptyCells Test (#" + testCaseCounter + ") passed.");
         } else {
-            System.out.println("Agent getEmptyCells Test (#" + testCaseCounter + ", UID: 1) failed! Number of percieved empty cells: " + testAgent.getEmptyCells());
+            System.out.println("Agent getNumberOfEmptyCells Test (#" + testCaseCounter + ", UID: 1) failed! Number of percieved empty cells: " + testAgent.getNumberOfEmptyCells());
         }
         testCaseCounter++;
         
-        if (testAgent.getSameColorCells()== 2){
-            System.out.println("Agent getSameColorCells Test (#" + testCaseCounter + ") passed.");
+        if (testAgent.getNumberOfSameColorCells()== 2){
+            System.out.println("Agent getNumberOfSameColorCells Test (#" + testCaseCounter + ") passed.");
         } else {
-            System.out.println("Agent getSameColorCells Test (#" + testCaseCounter + ", UID: 7) failed! Number of percieved same color cells: " + testAgent.getSameColorCells());
+            System.out.println("Agent getNumberOfSameColorCells Test (#" + testCaseCounter + ", UID: 7) failed! Number of percieved same color cells: " + testAgent.getNumberOfSameColorCells());
         }
         testCaseCounter++;
 
-        if (testAgent.getDifferentColorCells()== 1){
-            System.out.println("Agent getDifferentColorCells Test (#" + testCaseCounter + ") passed.");
+        if (testAgent.getNumberOfDifferentColorCells()== 1){
+            System.out.println("Agent getNumberOfDifferentColorCells Test (#" + testCaseCounter + ") passed.");
         } else {
-            System.out.println("Agent getDifferentColorCells Test (#" + testCaseCounter + ", UID: 8) failed! Number of percieved different color cells: " + testAgent.getDifferentColorCells());
+            System.out.println("Agent getNumberOfDifferentColorCells Test (#" + testCaseCounter + ", UID: 8) failed! Number of percieved different color cells: " + testAgent.getNumberOfDifferentColorCells());
         }
         testCaseCounter++;        
         
         //test: find all 3 neighboring empty cells, 1 cell of the same color and 1 cell of different color when the Agent is on the edge of the map.
         //here the array should be replaced but for the sake of simplicity, we'll use the same array but with a different position.
         
-        testAgent.setX(1);
-        testAgent.setY(0);        
+        testAgent.setCell(1, 0, 'A');       
         
         testAgent.getCells(testArray1);
-        if (testAgent.getEmptyCells() == 3){
-            System.out.println("Agent getEmptyCells Test (#" + testCaseCounter + ") passed.");
+        if (testAgent.getNumberOfEmptyCells() == 3){
+            System.out.println("Agent getNumberOfEmptyCells Test (#" + testCaseCounter + ") passed.");
         } else {
-            System.out.println("Agent getEmptyCells Test (#" + testCaseCounter + ", UID: 6) failed! Number of percieved empty cells: " + testAgent.getEmptyCells());
+            System.out.println("Agent getNumberOfEmptyCells Test (#" + testCaseCounter + ", UID: 6) failed! Number of percieved empty cells: " + testAgent.getNumberOfEmptyCells());
         }
         testCaseCounter++;
         
-        if (testAgent.getSameColorCells()== 1){
-            System.out.println("Agent getSameColorCells Test (#" + testCaseCounter + ") passed.");
+        if (testAgent.getNumberOfSameColorCells()== 1){
+            System.out.println("Agent getNumberOfSameColorCells Test (#" + testCaseCounter + ") passed.");
         } else {
-            System.out.println("Agent getSameColorCells Test (#" + testCaseCounter + ", UID: 9) failed! Number of percieved same color cells: " + testAgent.getSameColorCells());
+            System.out.println("Agent getNumberOfSameColorCells Test (#" + testCaseCounter + ", UID: 9) failed! Number of percieved same color cells: " + testAgent.getNumberOfSameColorCells());
         }
         testCaseCounter++;
 
-        if (testAgent.getDifferentColorCells()== 1){
-            System.out.println("Agent getDifferentColorCells Test (#" + testCaseCounter + ") passed.");
+        if (testAgent.getNumberOfDifferentColorCells()== 1){
+            System.out.println("Agent getNumberOfDifferentColorCells Test (#" + testCaseCounter + ") passed.");
         } else {
-            System.out.println("Agent getDifferentColorCells Test (#" + testCaseCounter + ", UID: 10) failed! Number of percieved different color cells: " + testAgent.getDifferentColorCells());
+            System.out.println("Agent getNumberOfDifferentColorCells Test (#" + testCaseCounter + ", UID: 10) failed! Number of percieved different color cells: " + testAgent.getNumberOfDifferentColorCells());
         }
         testCaseCounter++;
 
         //create a 4x3 test coordinate system and assign the Agent's position
         
-        testAgent.setColor('B');
         char[][] testArray2 = {{'A','A','A'},
                                {'A','B','A'},
                                {'A','A','A'},
                                {'_','_','B'}};
-        testAgent.setX(1);
-        testAgent.setY(1);
+        testAgent.setCell(1, 1, 'B');
         
         //test: find 0 neighboring empty cell, 0 cell of the same color and 8 cell of different color
 
         testAgent.getCells(testArray2);
-        if (testAgent.getEmptyCells() == 0){
-            System.out.println("Agent getEmptyCells Test (#" + testCaseCounter + ") passed.");
+        if (testAgent.getNumberOfEmptyCells() == 0){
+            System.out.println("Agent getNumberOfEmptyCells Test (#" + testCaseCounter + ") passed.");
         } else {
-            System.out.println("Agent getEmptyCells Test (#" + testCaseCounter + ", UID: 11) failed! Number of percieved empty cells: " + testAgent.getEmptyCells());
+            System.out.println("Agent getNumberOfEmptyCells Test (#" + testCaseCounter + ", UID: 11) failed! Number of percieved empty cells: " + testAgent.getNumberOfEmptyCells());
         }
         testCaseCounter++;
         
-        if (testAgent.getSameColorCells()== 0){
-            System.out.println("Agent getSameColorCells Test (#" + testCaseCounter + ") passed.");
+        if (testAgent.getNumberOfSameColorCells()== 0){
+            System.out.println("Agent getNumberOfSameColorCells Test (#" + testCaseCounter + ") passed.");
         } else {
-            System.out.println("Agent getSameColorCells Test (#" + testCaseCounter + ", UID: 12) failed! Number of percieved same color cells: " + testAgent.getSameColorCells());
+            System.out.println("Agent getNumberOfSameColorCells Test (#" + testCaseCounter + ", UID: 12) failed! Number of percieved same color cells: " + testAgent.getNumberOfSameColorCells());
         }
         testCaseCounter++;
 
-        if (testAgent.getDifferentColorCells()== 8){
-            System.out.println("Agent getDifferentColorCells Test (#" + testCaseCounter + ") passed.");
+        if (testAgent.getNumberOfDifferentColorCells()== 8){
+            System.out.println("Agent getNumberOfDifferentColorCells Test (#" + testCaseCounter + ") passed.");
         } else {
-            System.out.println("Agent getDifferentColorCells Test (#" + testCaseCounter + ", UID: 13) failed! Number of percieved different color cells: " + testAgent.getDifferentColorCells());
+            System.out.println("Agent getNumberOfDifferentColorCells Test (#" + testCaseCounter + ", UID: 13) failed! Number of percieved different color cells: " + testAgent.getNumberOfDifferentColorCells());
         }
         testCaseCounter++;
         
         //test: find 1 neighboring empty cell, 0 cell of the same color and 2 cells of different color when the Agent is in the corner of the map.
         //here the array should be replaced but for the sake of simplicity, we'll use the same array but with a different position.
         
-        testAgent.setX(2);
-        testAgent.setY(3);
+        testAgent.setCell(2, 3, 'A');
         
         testAgent.getCells(testArray2);
-        if (testAgent.getEmptyCells() == 1){
-            System.out.println("Agent getEmptyCells Test (#" + testCaseCounter + ") passed.");
+        if (testAgent.getNumberOfEmptyCells() == 1){
+            System.out.println("Agent getNumberOfEmptyCells Test (#" + testCaseCounter + ") passed.");
         } else {
-            System.out.println("Agent getEmptyCells Test (#" + testCaseCounter + ", UID: 14) failed! Number of percieved empty cells: " + testAgent.getEmptyCells());
+            System.out.println("Agent getNumberOfEmptyCells Test (#" + testCaseCounter + ", UID: 14) failed! Number of percieved empty cells: " + testAgent.getNumberOfEmptyCells());
         }
         testCaseCounter++;
         
-        if (testAgent.getSameColorCells()== 0){
-            System.out.println("Agent getSameColorCells Test (#" + testCaseCounter + ") passed.");
+        if (testAgent.getNumberOfSameColorCells()== 0){
+            System.out.println("Agent getNumberOfSameColorCells Test (#" + testCaseCounter + ") passed.");
         } else {
-            System.out.println("Agent getSameColorCells Test (#" + testCaseCounter + ", UID: 15) failed! Number of percieved same color cells: " + testAgent.getSameColorCells());
+            System.out.println("Agent getNumberOfSameColorCells Test (#" + testCaseCounter + ", UID: 15) failed! Number of percieved same color cells: " + testAgent.getNumberOfSameColorCells());
         }
         testCaseCounter++;
 
-        if (testAgent.getDifferentColorCells()== 2){
-            System.out.println("Agent getDifferentColorCells Test (#" + testCaseCounter + ") passed.");
+        if (testAgent.getNumberOfDifferentColorCells()== 2){
+            System.out.println("Agent getNumberOfDifferentColorCells Test (#" + testCaseCounter + ") passed.");
         } else {
-            System.out.println("Agent getDifferentColorCells Test (#" + testCaseCounter + ", UID: 16) failed! Number of percieved different color cells: " + testAgent.getDifferentColorCells());
+            System.out.println("Agent getNumberOfDifferentColorCells Test (#" + testCaseCounter + ", UID: 16) failed! Number of percieved different color cells: " + testAgent.getNumberOfDifferentColorCells());
         }
         testCaseCounter++;
         
@@ -236,7 +232,7 @@ public class Tests {
         if (testAgent.getNextStep()== null){
             System.out.println("Agent getNextStep Test (#" + testCaseCounter + ") passed.");
         } else {
-            System.out.println("Agent getNextStep Test (#" + testCaseCounter + ", UID: 17) failed! Next step data(x, y, color): " + testAgent.getNextStep().x + ", " + testAgent.getNextStep().y + ", " + testAgent.getNextStep().color);
+            System.out.println("Agent getNextStep Test (#" + testCaseCounter + ", UID: 17) failed! Next step data(x, y, color): " + testAgent.getNextStep().getX() + ", " + testAgent.getNextStep().getY() + ", " + testAgent.getNextStep().getColor());
         }
         testCaseCounter++;
         
@@ -245,8 +241,7 @@ public class Tests {
                                {'_','A','A'},
                                {'_','_','B'}};
         
-        testAgent.setX(2);
-        testAgent.setY(0);
+        testAgent.setCell(2, 0, 'A');
         
         testAgent.getCells(testArray2);
         testAgent.setNextStep();
@@ -254,14 +249,12 @@ public class Tests {
         if (testAgent.getNextStep()== null){
             System.out.println("Agent setNextStep Test (#" + testCaseCounter + ") passed.");
         } else {
-            System.out.println("Agent setNextStep Test (#" + testCaseCounter + ", UID: 18) failed! Next step data(x, y, color): " + testAgent.getNextStep().x + ", " + testAgent.getNextStep().y + ", " + testAgent.getNextStep().color);
+            System.out.println("Agent setNextStep Test (#" + testCaseCounter + ", UID: 18) failed! Next step data(x, y, color): " + testAgent.getNextStep().getX() + ", " + testAgent.getNextStep().getY() + ", " + testAgent.getNextStep().getColor());
         }
         testCaseCounter++;       
         
         
-        testAgent.setX(1);
-        testAgent.setY(0);
-        testAgent.setColor('A');
+        testAgent.setCell(1, 0, 'A');
         testAgent.setHomophility(0.01f);
         
         testAgent.getCells(testArray2);
@@ -270,13 +263,11 @@ public class Tests {
         if (testAgent.getNextStep()== null){
             System.out.println("Agent setNextStep Test (#" + testCaseCounter + ") passed.");
         } else {
-            System.out.println("Agent setNextStep Test (#" + testCaseCounter + ", UID: 19) failed! Next step data(x, y, color): " + testAgent.getNextStep().x + ", " + testAgent.getNextStep().y + ", " + testAgent.getNextStep().color);
+            System.out.println("Agent setNextStep Test (#" + testCaseCounter + ", UID: 19) failed! Next step data(x, y, color): " + testAgent.getNextStep().getX() + ", " + testAgent.getNextStep().getY() + ", " + testAgent.getNextStep().getColor());
         }
         testCaseCounter++;  
 
-        testAgent.setX(1);
-        testAgent.setY(2);
-        testAgent.setColor('A');
+        testAgent.setCell(1, 2, 'A');
         testAgent.setHomophility(1f);
         
         testAgent.getCells(testArray2);
@@ -292,9 +283,9 @@ public class Tests {
         if (remainingCells.get(randomOutput).equals(testAgent.getNextStep())){
             System.out.println("Agent setNextStep Test (#" + testCaseCounter + ") passed.");
         } else {
-            System.out.println("Agent setNextStep Test (#" + testCaseCounter + ", UID: 20) failed! Next step data(x, y, color): " + testAgent.getNextStep().x + ", " + testAgent.getNextStep().y + ", " + testAgent.getNextStep().color);
+            System.out.println("Agent setNextStep Test (#" + testCaseCounter + ", UID: 20) failed! Next step data(x, y, color): " + testAgent.getNextStep().getX() + ", " + testAgent.getNextStep().getY() + ", " + testAgent.getNextStep().getColor());
             System.out.println("randomOutput = " + randomOutput);
-            System.out.println("randomly chosen cell by second RNG (x, y, color): " + remainingCells.get(randomOutput).x + ", " + remainingCells.get(randomOutput).y + ", " + remainingCells.get(randomOutput).color);
+            System.out.println("randomly chosen cell by second RNG (x, y, color): " + remainingCells.get(randomOutput).getX() + ", " + remainingCells.get(randomOutput).getY() + ", " + remainingCells.get(randomOutput).getColor());
         }
         testCaseCounter++;
        
@@ -302,20 +293,19 @@ public class Tests {
     
     public void testUpdate(Agent testAgent) {
 
-        testAgent.setX(0);
-        testAgent.setY(0);
-        testAgent.setColor('A');
+        testAgent.setCell(0, 0, 'A');
         testAgent.setHomophility(1f);        
-        char[][] testArrayInput = {{'A','B','_'},
-                               {'_','B','_'},
-                               {'_','_','_'},
-                               {'_','_','_'}};
+        char[][] testArrayInput =      {{'A','B','_'},
+                                        {'_','B','_'},
+                                        {'_','_','_'},
+                                        {'_','_','_'}};
         
-        char[][] testExpectedOutput = {{'_','B','_'},
-                               {'A','B','_'},
-                               {'_','_','_'},
-                               {'_','_','_'}};
+        char[][] testExpectedOutput =  {{'_','B','_'},
+                                        {'A','B','_'},
+                                        {'_','_','_'},
+                                        {'_','_','_'}};
         
+        testAgent.getCells(testArrayInput);
         testAgent.setNextStep();
         char[][] testArrayOutput = testAgent.setPosition(testArrayInput);
         
@@ -326,8 +316,84 @@ public class Tests {
         }
         testCaseCounter++;          
         
+        testAgent.setCell(0, 0, 'A');
+        testAgent.setHomophility(1f);        
+        char[][] testArrayInput2 =      {{'A','B','_'},
+                                        {'A','B','_'},
+                                        {'_','_','_'},
+                                        {'_','_','_'}};
+        
+        char[][] testExpectedOutput2 =  {{'A','B','_'},
+                                        {'A','B','_'},
+                                        {'_','_','_'},
+                                        {'_','_','_'}};
+        
+        testAgent.getCells(testArrayInput2);        
+        testAgent.setNextStep();
+        char[][] testArrayOutput2 = testAgent.setPosition(testArrayInput2);
+        
+        if (Arrays.deepEquals(testExpectedOutput2, testArrayOutput2)){
+            System.out.println("Agent setPosition Test (#" + testCaseCounter + ") passed.");
+        } else {
+            System.out.println("Agent setPosition Test (#" + testCaseCounter + ", UID: 21) failed! Actual output: " + Arrays.deepToString(testArrayOutput2));
+        }
+        testCaseCounter++;        
+        
+    }
+
+    public void testSetupSim(SegregationModel sim) {
+        
+        SegregationModel.numberOfColors = 'A';
+        SegregationModel.mapHeigth = 2;
+        SegregationModel.mapLength = 2;
+        SegregationModel.mapPoints = 4;
+        SegregationModel.map = new char[2][2];
+        SegregationModel.agentCount = new ArrayList<Integer>();
+        SegregationModel.agentCount.add(3);
+        
+        sim.setupSimulation();
+        
+        System.out.println("SegregationModel setupSimulation Test (#" + testCaseCounter + ", UID: 22). Generated output: " + Arrays.deepToString(SegregationModel.map));
         
         
+        SegregationModel.numberOfColors = 'B';
+        SegregationModel.mapHeigth = 3;
+        SegregationModel.mapLength = 3;
+        SegregationModel.mapPoints = 9;
+        SegregationModel.map = new char[3][3];
+        SegregationModel.agentCount = new ArrayList<Integer>();
+        SegregationModel.agentCount.add(1);
+        SegregationModel.agentCount.add(1);
+        
+        sim.setupSimulation();
+        
+        System.out.println("SegregationModel setupSimulation Test (#" + testCaseCounter + ", UID: 23). Generated output: " + Arrays.deepToString(SegregationModel.map));
+    
+        SegregationModel.numberOfColors = 'D';
+        SegregationModel.mapHeigth = 4;
+        SegregationModel.mapLength = 1;
+        SegregationModel.mapPoints = 4;
+        SegregationModel.map = new char[4][1];
+        SegregationModel.agentCount = new ArrayList<Integer>();
+        SegregationModel.agentCount.add(1);
+        SegregationModel.agentCount.add(1);
+        SegregationModel.agentCount.add(1);
+        SegregationModel.agentCount.add(1);
+        
+        sim.setupSimulation();
+        
+        System.out.println("SegregationModel setupSimulation Test (#" + testCaseCounter + ", UID: 24). Generated output: " + Arrays.deepToString(SegregationModel.map));
+    
+        SegregationModel.numberOfColors = 'A';
+        SegregationModel.mapHeigth = 1;
+        SegregationModel.mapLength = 1;
+        SegregationModel.mapPoints = 1;
+        SegregationModel.map = new char[1][1];
+        SegregationModel.agentCount = new ArrayList<Integer>();
+        
+        sim.setupSimulation();
+        
+        System.out.println("SegregationModel setupSimulation Test (#" + testCaseCounter + ", UID: 25). Generated output: " + Arrays.deepToString(SegregationModel.map));        
     }
     
 }
