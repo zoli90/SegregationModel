@@ -110,7 +110,6 @@ public class Tests {
         
         //create a 3x3 test coordinate system and assign the Agent's position
         
-        testAgent.setColor('A');
         char[][] testArray1 = {{'_','A','_'},
                                {'B','A','_'},
                                {'_','_','A'}};
@@ -344,20 +343,22 @@ public class Tests {
 
     public void testSetupSim(SegregationModel sim) {
         
-        SegregationModel.numberOfColors = 'A';
+        SegregationModel.lastColor = 'A';
         SegregationModel.mapHeigth = 2;
         SegregationModel.mapLength = 2;
         SegregationModel.mapPoints = 4;
         SegregationModel.map = new char[2][2];
         SegregationModel.agentCount = new ArrayList<Integer>();
         SegregationModel.agentCount.add(3);
+        SegregationModel.homophilityList = new ArrayList<Float>();
+        SegregationModel.homophilityList.add(0.5f);
         
         sim.setupSimulation();
         
         System.out.println("SegregationModel setupSimulation Test (#" + testCaseCounter + ", UID: 22). Generated output: " + Arrays.deepToString(SegregationModel.map));
         
         
-        SegregationModel.numberOfColors = 'B';
+        SegregationModel.lastColor = 'B';
         SegregationModel.mapHeigth = 3;
         SegregationModel.mapLength = 3;
         SegregationModel.mapPoints = 9;
@@ -365,12 +366,15 @@ public class Tests {
         SegregationModel.agentCount = new ArrayList<Integer>();
         SegregationModel.agentCount.add(1);
         SegregationModel.agentCount.add(1);
+        SegregationModel.homophilityList = new ArrayList<Float>();
+        SegregationModel.homophilityList.add(0.5f);
+        SegregationModel.homophilityList.add(0.5f);        
         
         sim.setupSimulation();
         
         System.out.println("SegregationModel setupSimulation Test (#" + testCaseCounter + ", UID: 23). Generated output: " + Arrays.deepToString(SegregationModel.map));
     
-        SegregationModel.numberOfColors = 'D';
+        SegregationModel.lastColor = 'D';
         SegregationModel.mapHeigth = 4;
         SegregationModel.mapLength = 1;
         SegregationModel.mapPoints = 4;
@@ -380,17 +384,24 @@ public class Tests {
         SegregationModel.agentCount.add(1);
         SegregationModel.agentCount.add(1);
         SegregationModel.agentCount.add(1);
-        
+        SegregationModel.homophilityList = new ArrayList<Float>();
+        SegregationModel.homophilityList.add(0.5f);
+        SegregationModel.homophilityList.add(0.5f);
+        SegregationModel.homophilityList.add(0.5f);  
+        SegregationModel.homophilityList.add(0.5f);
+
         sim.setupSimulation();
         
         System.out.println("SegregationModel setupSimulation Test (#" + testCaseCounter + ", UID: 24). Generated output: " + Arrays.deepToString(SegregationModel.map));
     
-        SegregationModel.numberOfColors = 'A';
+        SegregationModel.lastColor = 'A';
         SegregationModel.mapHeigth = 1;
         SegregationModel.mapLength = 1;
         SegregationModel.mapPoints = 1;
         SegregationModel.map = new char[1][1];
         SegregationModel.agentCount = new ArrayList<Integer>();
+        SegregationModel.homophilityList = new ArrayList<Float>();
+        SegregationModel.homophilityList.add(0.5f);
         
         sim.setupSimulation();
         
