@@ -31,16 +31,18 @@ public class SegregationModel {
     
     //important variables
     public static final char LAST_COLOR = 'D';
-    public static char numberOfColors = 'D';
-    public static long seed = 1;
-    public static int mapLength = 200;
-    public static int mapHeigth = 40;
-    public static int mapPoints = mapLength * mapHeigth;
-    public static char[][] map = new char[mapHeigth][mapLength];
-    public static ArrayList<Integer> agentCount = new ArrayList<Integer>(Arrays.asList(100, 100, 100, 200));
-    public static ArrayList<Float> homophilityList = new ArrayList<Float>(Arrays.asList(0.5f, 0.5f, 0.5f, 0.5f));    
-    public static int tickTimeInMilliseconds = 200;
-    public static int numberOfTicks = 1000;
+    public static char lastColor;  //example value: 'D'
+    public static int numberOfColors; //calculated value
+    public static boolean hasSeed; //example value: true
+    public static long seed; //example value: 1
+    public static int mapLength; //example value: 200
+    public static int mapHeigth; //example value: 40
+    public static int mapPoints; //calculated value
+    public static char[][] map; //calculated value
+    public static ArrayList<Integer> agentCount; //example value: 100, 100, 100, 200
+    public static ArrayList<Float> homophilityList; //example value:0.5f, 0.5f, 0.5f, 0.5f
+    public static int tickTimeInMilliseconds; //example value: 200
+    public static int numberOfTicks; //example value: 1000
     public static ArrayList<Agent> agents = new ArrayList<Agent>();
     
     
@@ -66,7 +68,8 @@ public class SegregationModel {
         }
           
         //Initialization of the simulation
-        
+        CommandLineInterface cli = new CommandLineInterface();
+        cli.runCLI();
         SegregationModel sm = new SegregationModel();
         sm.setupSimulation();
         
@@ -96,13 +99,19 @@ public class SegregationModel {
             }
         }
         
-        Random randomGenerator = new Random(seed);
+        Random randomGenerator = new Random();
+        if (hasSeed)
+            randomGenerator.setSeed(seed);
+        
         //Then choose cells randomly and set them by colour in the array.
         for (int i = 0; i < agentCount.size(); i++) {
             for (int j = 0; j < agentCount.get(i); j++) {
                 int randomposition = randomGenerator.nextInt(placementList.size());
                 map[placementList.get(randomposition).getY()][placementList.get(randomposition).getX()] = (char) (65 + i);
-                agents.add(new Agent(new Cell(placementList.get(randomposition).getX(), placementList.get(randomposition).getY(), ((char) (65 + i))), homophilityList.get(i)));
+                
+                Cell insertCell = new Cell(placementList.get(randomposition).getX(), placementList.get(randomposition).getY(), ((char) (65 + i)));
+                Agent insertAgent = new Agent(insertCell, homophilityList.get(i));
+                agents.add(insertAgent);
                 placementList.remove(randomposition);
                 
             }
