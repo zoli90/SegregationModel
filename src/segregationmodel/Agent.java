@@ -17,14 +17,18 @@ public class Agent {
     
     //Section 1: instance variables
     
-    private float homophility; //float between 0 and 1 that shows the attraction to agents of the same type (or more precisely: the repulsion by different agents)
+    //float between 0 and 1 that shows the attraction to agents of the same type (or more precisely: the repulsion by different agents)
+    private float homophility; 
     
-    private ArrayList<Cell> neighborCells = new ArrayList<>(); //a dynamic list of neighboring cells. The number of cells vary because at the edge of the map the agent has less than 8 neighboring cells.
+    //a dynamic list of neighboring cells. The number of cells vary because at the edge of the map the agent has less than 8 neighboring cells.
+    private ArrayList<Cell> neighborCells = new ArrayList<>(); 
 
-    private Cell cell = new Cell(0,0,'A'); //an initialized cell object that will store the agent's color and coordinates.
+    //an initialized cell object that will store the agent's color and coordinates.
+    private Cell cell = new Cell(0,0,'A'); 
     
-    private Cell nextStep = null; //output for deciding where to move and input for changing position. After moving (or if there's nowhere to go) it is set back to null.
-    
+    //output for deciding where to move and input for changing position. After moving (or if there's nowhere to go) it is set back to null.
+    private Cell nextStep = null; 
+   
     public static Random randomGenerator = new Random(SegregationModel.seed);
     
     //Section 2: basic setters and constructor methods
