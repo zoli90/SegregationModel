@@ -10,14 +10,32 @@ package segregationmodel;
  * @author zoli
  */
 public class Cell {
-    public int x;
-    public int y;
-    public char color;
-
+    private int x;
+    private int y;
+    private char color;
+      
     public Cell(int i, int j, char c) {
         x = i;
         y = j;
         color = c;
-        
     }
+    
+    public int getX() {
+        return x;
+    }
+    
+    public int getY() {
+        return y;
+    }
+
+    public char getColor() {
+        return color;
+    } 
+    
+    public void setCell(int i, int j, char c) {
+        x = i;
+        y = j;
+        color = c;
+    }
+    
 }
